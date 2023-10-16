@@ -1,0 +1,35 @@
+CUDA_VISIBLE_DEVICES=0,1,2,3 fairseq-train \
+--user-dir ../Trans2Former/ \
+--num-workers 32 \
+--ddp-backend=legacy_ddp \
+--dataset-name ethereum \
+--dataset-source pkl \
+--data-dir ../dataset/pretrain/ \
+--task pretrain \
+--pretrain-task NCP \
+--max-edges 1024 \
+--seed 777 \
+--fake-edge-prob=0.5 \
+--criterion binary_loss \
+--arch trans2former_base \
+--encoding-method concat \
+--performer \
+--performer-feature-redraw-interval 100 \
+--pre-layernorm \
+--num-classes 1 \
+--attention-dropout 0.1 --act-dropout 0.1 --dropout 0.0 \
+--optimizer adam --adam-betas '(0.9, 0.999)' --adam-eps 1e-8 --clip-norm 5.0 --weight-decay 0.01 \
+--lr-scheduler polynomial_decay --power 1 --warmup-updates 60000 --total-num-update 400000 \
+--lr 2e-4 --end-learning-rate 1e-9 \
+--batch-size 4 \
+--data-buffer-size 48 \
+--encoder-layers 12 \
+--encoder-embed-dim 768 \
+--encoder-ffn-embed-dim 768 \
+--encoder-attention-heads 32 \
+--max-epoch 1000 \
+--save-dir ./ckpts/pretrain/ \
+--tensorboard-logdir ./log/pretrain/ \
+--log-interval 50 \
+--save-interval-updates 10000 \
+--save-interval 1
